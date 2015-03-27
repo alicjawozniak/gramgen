@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DLUGSLOWA 20
+#define DLUGSLOWA 40
 
 struct s{
     char* prefiks;
@@ -17,7 +17,7 @@ struct s{
 struct s * stworz_skorowidz(char* ciag, char* wyst);
 void dodaj_haslo (struct s* skorow, char* ciag, char* wyst);
 void dodaj_wystapienie (struct s* p, char* slowo);
-void powieksz_tab_slow (struct s* p);
+void powieksz_o_slowo (struct s* p);
 struct s * znajdz_haslo (struct s* skorow, char* ciag);
 void wypisz_skorowidz (FILE* plik, struct s * skorowidz);
 void wypisz_linijke (FILE* plik, struct s * p);
