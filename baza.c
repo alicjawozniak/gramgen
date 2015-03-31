@@ -1,9 +1,11 @@
 #include "baza.h"
 
 
-void dodaj_haslo (struct s* skorow, char* ciag, char* wyst){
+void dodaj_haslo (struct s* skorow, char* ciag, char* wyst)
+{
     struct s * p = skorow;
-    while (p->nast != NULL){  //znalezienie nowej galezi
+    while (p->nast != NULL)   //znalezienie nowej galezi
+    {
         p = p->nast;
     }
     p->nast = malloc (sizeof *p->nast);
@@ -17,7 +19,8 @@ void dodaj_haslo (struct s* skorow, char* ciag, char* wyst){
     p->nast->rozmiar = DLUGSLOWA;  //init rozmiaru
 };
 
-struct s* stworz_skorowidz (char* ciag, char* wyst){
+struct s* stworz_skorowidz (char* ciag, char* wyst)
+{
     struct s* skorowidz = malloc(sizeof *skorowidz);
     skorowidz->prefiks = malloc((strlen(ciag)+2)*sizeof(char));
     strcpy (skorowidz->prefiks, ciag);
@@ -29,7 +32,8 @@ struct s* stworz_skorowidz (char* ciag, char* wyst){
     return skorowidz;
 };
 
-void dodaj_wystapienie (struct s* p, char* slowo){
+void dodaj_wystapienie (struct s* p, char* slowo)
+{
     if(p==NULL)
         printf("p jest null");
     powieksz_o_slowo(p);
@@ -38,9 +42,11 @@ void dodaj_wystapienie (struct s* p, char* slowo){
     p->liczba_wyst++;
 }
 
-struct s* znajdz_haslo (struct s* skorow, char* ciag){
+struct s* znajdz_haslo (struct s* skorow, char* ciag)
+{
     struct s* p = skorow;
-    while (p != NULL){
+    while (p != NULL)
+    {
         if (strcmp(p->prefiks, ciag)==0)
             break;
         p = p->nast;
@@ -48,19 +54,23 @@ struct s* znajdz_haslo (struct s* skorow, char* ciag){
     return p;
 };
 
-void powieksz_o_slowo (struct s* p){
+void powieksz_o_slowo (struct s* p)
+{
     p->sufiksy = realloc(p->sufiksy, (p->rozmiar+DLUGSLOWA)*sizeof(char));
     p->rozmiar += DLUGSLOWA;
 }
 
-void wypisz_skorowidz(FILE* plik, struct s* skorowidz){
+void wypisz_skorowidz(FILE* plik, struct s* skorowidz)
+{
     struct s* p = skorowidz;
-    while (p != NULL){
+    while (p != NULL)
+    {
         wypisz_linijke(plik, p);
         p = p->nast;
     }
 }
 
-void wypisz_linijke (FILE* plik, struct s * p){
+void wypisz_linijke (FILE* plik, struct s * p)
+{
     fprintf(plik, "%s %d %s\n", p->prefiks, p->liczba_wyst, p->sufiksy);
 }
