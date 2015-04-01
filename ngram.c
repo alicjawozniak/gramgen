@@ -48,6 +48,7 @@ int napisz_akapit (FILE* fp, struct s* skorowidz, int rzad, int ilosc_slow)
     ilosc_slow -= (rzad-1);
     fpos_t pozycja;
     fgetpos(fp, &pozycja);
+    fprintf(fp, "\t");
     losuj_prefiks(fp, skorowidz);
     wypisane_slowa += 2;
     fsetpos(fp, &pozycja);
