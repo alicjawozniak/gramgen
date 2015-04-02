@@ -1,9 +1,9 @@
 #include "plik.h"
 
-void zapisz_baze_do_pliku (FILE* fp, struct s* skorowidz)
+void zapisz_baze_do_pliku (char* plik, struct s* skorowidz)
 {
-    FILE* temp = fp;
-    wypisz_skorowidz(temp, skorowidz);
+    FILE* fp = fopen(plik, "r+");
+    wypisz_skorowidz(fp, skorowidz);
 }
 
 struct s* wczytaj_baze_z_pliku (FILE* fp, int rzad)
