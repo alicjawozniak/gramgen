@@ -4,10 +4,12 @@ void zapisz_baze_do_pliku (char* plik, struct s* skorowidz)
 {
     FILE* fp = fopen(plik, "r+");
     wypisz_skorowidz(fp, skorowidz);
+    fclose(fp);
 }
 
-struct s* wczytaj_baze_z_pliku (FILE* fp, int rzad)
+struct s* wczytaj_baze_z_pliku (char* plik, int rzad)
 {
+    FILE* fp = fopen(plik, "r");
     struct s* skorowidz = malloc (sizeof *skorowidz);
     struct s* p = skorowidz;
 
@@ -24,24 +26,29 @@ struct s* wczytaj_baze_z_pliku (FILE* fp, int rzad)
 
 int wczytaj_linijke(FILE* fp, struct s* p, int rzad)
 {
-    char bufor[1000];
-    int i = 1;
+    char bufor[DLUGSLOWA];
+    char k;
+    int i = 0;
     p->prefiks = malloc(DLUGSLOWA*rzad*sizeof(char));
     strcpy (p->prefiks, "");
-    p->sufiksy = malloc(DLUGSLOWA*rzad*2*sizeof(char));
-    strcpy (p->sufiksy, "");
-    while (i < rzad)
+    while (i < rzad - 1)
     {
         if (fscanf(fp, "%s", bufor) != 1) return -1;
         strcat(p->prefiks, bufor);
-        if (i<rzad)
+        if (i<rzad -2)
             strcat(p->prefiks, " ");
         i++;
     };
     fscanf(fp, "%d", &i);
+    p->sufiksy = malloc(DLUGSLOWA*i*2*sizeof(char));
     p->liczba_wyst = p->rozmiar = i;
-    fgets(bufor, 1000, fp);
-    strncat(p->sufiksy, bufor, (strlen(bufor)-1)*sizeof (char));
+    i = 0;
+    fgetc(fp);
+    while ((k = fgetc(fp)) != '\n' && k != EOF){
+        p->sufiksy[i] = k;
+        i++;
+    }
+    p->sufiksy[i] = '\0';
     p->nast = NULL;
     return 0;
 }

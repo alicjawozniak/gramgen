@@ -5,6 +5,7 @@
 #include <string.h>
 
 #define DLUGSLOWA 40
+#define ILOSC_SUF 1000
 
 struct s{
     char* prefiks;
