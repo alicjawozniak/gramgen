@@ -1,8 +1,5 @@
 #include "ngram.h"
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
-#include <time.h>
 
 char* dopisz_sufiks(FILE* plik, struct s* skorowidz, char* zdanie, int rzad)
 {
@@ -99,10 +96,15 @@ char* losuj_prefiks (FILE* fp, struct s* skorowidz)
     return p->prefiks;
 }
 
-void napisz_tekst (char* plik, struct s* skorowidz, int rzad, int suma_slow, int ilosc_akapitow)
+int napisz_tekst (char* plik, struct s* skorowidz, int rzad, int suma_slow, int ilosc_akapitow)
 {
-    int dlug_akapitu = suma_slow/ilosc_akapitow;
+    int dlug_akapitu = suma_slow/ilosc_akapitow + 1;
     FILE* fp = fopen (plik, "r+");
+    if (fp == NULL)
+    {
+        printf("Nie znaleziono pliku wyjsciowego.\n");
+        return 0;
+    }
     while ( suma_slow >= dlug_akapitu)
     {
         fseek(fp, 0, SEEK_END);
@@ -111,6 +113,6 @@ void napisz_tekst (char* plik, struct s* skorowidz, int rzad, int suma_slow, int
     fseek(fp, 0, SEEK_END);
     if (suma_slow != 0)
         napisz_akapit(fp, skorowidz, rzad, suma_slow);
-
+    return 1;
 }
 

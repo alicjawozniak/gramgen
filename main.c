@@ -1,11 +1,11 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <time.h>
 #include "baza.h"
 #include "ngram.h"
 #include "plik.h"
 #include "stats.h"
 
-void wyswietl_info();
+void wyswietl_info ();
+void wyswietl_blad ();
 
 int main(int argc, char** argv)
 {
@@ -21,17 +21,27 @@ int main(int argc, char** argv)
         {
             if (strcmp(argv[2], "-s") == 0)
                 ilosc_slow = atoi(argv[3]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[4], "-a") == 0)
                 ilosc_akapitow = atoi(argv[5]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[6], "-n") == 0)
                 rzad = atoi (argv[7]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[8], "-b") == 0)
                 strcpy(plik_baza, argv[9]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[10], "-w") == 0)
                 strcpy(plik_wyjscie, argv[11]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
 
             struct s* skorowidz = wczytaj_baze_z_pliku(plik_baza, rzad);
-            napisz_tekst(plik_wyjscie, skorowidz, rzad, ilosc_slow, ilosc_akapitow);
+            if (skorowidz == NULL){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
+            if (napisz_tekst(plik_wyjscie, skorowidz, rzad, ilosc_slow, ilosc_akapitow) == 0){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            }
         }
     }
 
@@ -41,20 +51,33 @@ int main(int argc, char** argv)
         {
             if (strcmp(argv[2], "-s") == 0)
                 ilosc_slow = atoi(argv[3]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[4], "-a") == 0)
                 ilosc_akapitow = atoi(argv[5]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[6], "-n") == 0)
                 rzad = atoi (argv[7]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[8], "-b") == 0)
                 strcpy(plik_baza, argv[9]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[10], "-w") == 0)
                 strcpy(plik_wyjscie, argv[11]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[12], "-p") == 0)
                 strcpy(plik_tekst, argv[13]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
 
             struct s* skorowidz = czytaj_tekst_do_bazy(plik_tekst, rzad);
-            zapisz_baze_do_pliku(plik_baza, skorowidz);
-            napisz_tekst(plik_wyjscie, skorowidz, rzad, ilosc_slow, ilosc_akapitow);
+            if (skorowidz == NULL){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
+            if(zapisz_baze_do_pliku(plik_baza, skorowidz) == 0){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
+            if(napisz_tekst(plik_wyjscie, skorowidz, rzad, ilosc_slow, ilosc_akapitow) == 0){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
         }
     }
 
@@ -64,33 +87,46 @@ int main(int argc, char** argv)
         {
             if (strcmp(argv[2], "-n") == 0)
                 rzad = atoi (argv[3]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[4], "-b") == 0)
                 strcpy(plik_baza, argv[5]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[6], "-p") == 0)
                 strcpy(plik_tekst, argv[7]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
 
             struct s* skorowidz = czytaj_tekst_do_bazy(plik_tekst, rzad);
-            zapisz_baze_do_pliku(plik_baza, skorowidz);
+            if(skorowidz == NULL){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
+            if(zapisz_baze_do_pliku(plik_baza, skorowidz) == 0){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
         }
         if (strcmp(argv[1], "-stats") == 0)
         {
             if (strcmp(argv[2], "-n") == 0)
                 rzad = atoi(argv[3]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
             if (strcmp(argv[4], "-b") == 0)
                 strcpy(plik_baza, argv[5]);
+            else { wyswietl_blad(); wyswietl_info(); return 0;}
 
-            statystyki_calosc (plik_baza, rzad);
+            if (statystyki_calosc (plik_baza, rzad) == 0){
+                wyswietl_blad(); wyswietl_info(); return 0;
+            };
             if (argc == 8)
             {
                 if (strcmp(argv[6], "-p") == 0)
                     statystyki_ngramu(plik_baza, rzad, argv[7]);
+                else { wyswietl_blad(); wyswietl_info(); return 0;}
             }
 
         }
     }
     else
     {
-        printf ("Niepoprawne wywolanie programu.\nInstrukcja wywolania:\n\n");
+        wyswietl_blad();
         wyswietl_info();
     }
     return 0;
@@ -108,4 +144,8 @@ void wyswietl_info()
     printf (" ktorego bedzie zapisywany tekst, plik- nazwa pliku zawierajacego tekst do analizy, prefiks- prefiks ngramu\n\n");
     printf ("Podane plik powinny sie znajdowac w katalogu z plikiem wykonywanym programu i powinny zostac utworzone przed wywolaniem programu (puste)\n");
 
+}
+
+void wyswietl_blad (){
+        printf ("Niepoprawne wywolanie programu.\nInstrukcja wywolania:\n\n");
 }

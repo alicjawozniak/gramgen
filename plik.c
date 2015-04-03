@@ -1,15 +1,26 @@
 #include "plik.h"
 
-void zapisz_baze_do_pliku (char* plik, struct s* skorowidz)
+int zapisz_baze_do_pliku (char* plik, struct s* skorowidz)
 {
     FILE* fp = fopen(plik, "r+");
+    if (fp == NULL)
+    {
+        printf("Nie znaleziono pliku bazy.\n");
+        return 0;
+    }
     wypisz_skorowidz(fp, skorowidz);
     fclose(fp);
+    return 1;
 }
 
 struct s* wczytaj_baze_z_pliku (char* plik, int rzad)
 {
     FILE* fp = fopen(plik, "r");
+    if( fp == NULL)
+    {
+        printf("Nie znaleziono pliku bazy.\n");
+        return NULL;
+    }
     struct s* skorowidz = malloc (sizeof *skorowidz);
     struct s* p = skorowidz;
 
@@ -40,7 +51,7 @@ int wczytaj_linijke(FILE* fp, struct s* p, int rzad)
         i++;
     };
     fscanf(fp, "%d", &i);
-    p->sufiksy = malloc(DLUGSLOWA*i*2*sizeof(char));
+    p->sufiksy = malloc(DLUGSLOWA*i*sizeof(char));
     p->liczba_wyst = p->rozmiar = i;
     i = 0;
     fgetc(fp);
@@ -56,6 +67,11 @@ int wczytaj_linijke(FILE* fp, struct s* p, int rzad)
 struct s* czytaj_tekst_do_bazy (char* plik, int rzad)
 {
     FILE* fp = fopen(plik, "r");
+    if(fp == NULL)
+    {
+        printf("Nie znaleziono pliku z tekstem.\n");
+        return NULL;
+    }
     struct s* skorowidz;
     struct s* p;
     fpos_t pozycja;
@@ -80,6 +96,10 @@ struct s* czytaj_tekst_do_bazy (char* plik, int rzad)
     fsetpos(fp, &pozycja);
     while (fscanf(fp, "%s", sufiks) == 1)
     {
+        if (strlen(sufiks) > DLUGSLOWA){
+            printf ("W programie zadano za krotka dlugosc slowa, prosze ja zmienic\n");
+            return 0;
+        }
         strcat(prefiks, sufiks);
         if (i == 0)
             fgetpos(fp, &pozycja);

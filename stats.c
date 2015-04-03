@@ -1,7 +1,7 @@
 #include "stats.h"
 #include "baza.h"
 
-void statystyki_calosc(char* plik, int rzad){
+int statystyki_calosc(char* plik, int rzad){
     char najczestsze[DLUGSLOWA];
     char najrzadsze[DLUGSLOWA];
     int ilosc_ngramow = 0;
@@ -14,8 +14,12 @@ void statystyki_calosc(char* plik, int rzad){
     int temp_wyst = 0;
     int i = 0;
 
-    FILE* fp = fopen (plik, "r");
-
+    FILE* fp = fopen(plik, "r");
+    if(fp == NULL)
+    {
+        printf("Nie znaleziono pliku bazy.\n");
+        return 0;
+    }
     while (fscanf(fp, "%s", temp) == 1){
             while (i < rzad - 1){
                 strcat(prefiks, temp);
@@ -42,7 +46,7 @@ void statystyki_calosc(char* plik, int rzad){
     }
     printf ("W bazie jest zawarte: %d n-gramow\nZ czego najczesciej wystepuje: \"%s\" (%d razy)\na najrzadziej: \"%s\" (%d razy)\n",
             ilosc_ngramow, najczestsze, wyst_max, najrzadsze, wyst_min);
-
+    return 1;
 }
 
 void statystyki_ngramu(char* plik, int rzad, char* ngram){

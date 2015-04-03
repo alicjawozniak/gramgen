@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DLUGSLOWA 40
-#define ILOSC_SUF 1000
+#define DLUGSLOWA 10
 
 struct s{
     char* prefiks;
@@ -15,11 +14,11 @@ struct s{
     struct s* nast;
 };
 
-struct s * stworz_skorowidz(char* ciag, char* wyst);
-void dodaj_haslo (struct s* skorow, char* ciag, char* wyst);
-void dodaj_wystapienie (struct s* p, char* slowo);
+struct s * stworz_skorowidz(char* prefiks, char* sufiks);
+int dodaj_haslo (struct s* skorow, char* prefiks, char* sufiks);
+void dodaj_wystapienie (struct s* p, char* sufiks);
 void powieksz_o_slowo (struct s* p);
-struct s * znajdz_haslo (struct s* skorow, char* ciag);
-void wypisz_skorowidz (FILE* plik, struct s * skorowidz);
+struct s * znajdz_haslo (struct s* skorow, char* prefiks);
+int wypisz_skorowidz (FILE* plik, struct s * skorowidz);
 void wypisz_linijke (FILE* plik, struct s * p);
 #endif // _BAZA_H_
