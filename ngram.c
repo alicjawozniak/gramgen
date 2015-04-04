@@ -47,7 +47,7 @@ int napisz_akapit (FILE* fp, struct s* skorowidz, int rzad, int ilosc_slow)
     fgetpos(fp, &pozycja);
     fprintf(fp, "\t");
     losuj_prefiks(fp, skorowidz);
-    wypisane_slowa += 2;
+    wypisane_slowa += (rzad-1);
     fsetpos(fp, &pozycja);
     int i = 0, j = 0;
     char temp[1000] = "";
@@ -67,8 +67,11 @@ int napisz_akapit (FILE* fp, struct s* skorowidz, int rzad, int ilosc_slow)
         };
         if (dopisz_sufiks(fp, skorowidz, prefiks, rzad) != NULL)
             wypisane_slowa++;
-        else
+        else{
+            fseek(fp, 0, SEEK_END);
+            fprintf(fp, "\n");
             return wypisane_slowa;
+        }
         i = 0;
         strcpy(prefiks, "");
         strcpy(temp, "");

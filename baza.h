@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DLUGSLOWA 10
+#define DLUGSLOWA 30
 
 struct s{
     char* prefiks;

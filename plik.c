@@ -80,7 +80,10 @@ struct s* czytaj_tekst_do_bazy (char* plik, int rzad)
     char prefiks[1000] = "";
     while (i < rzad-1)
     {
-        fscanf(fp, "%s", sufiks);
+        if(fscanf(fp, "%s", sufiks) != 1){
+            printf("Podano za krotki tekst.\n");
+            return NULL;
+        };
         strcat(prefiks, sufiks);
         if (i == 0)
             fgetpos(fp, &pozycja);
