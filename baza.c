@@ -43,7 +43,6 @@ void dodaj_wystapienie (struct s* p, char* slowo)
     strcat(p->sufiksy, " ");
     strcat(p->sufiksy, slowo);
     p->liczba_wyst++;
-    return 1;
 }
 
 struct s* znajdz_haslo (struct s* skorow, char* prefiks)
